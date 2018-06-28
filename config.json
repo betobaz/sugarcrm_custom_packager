@@ -9,7 +9,7 @@
         "minor": 0,
         "patch": 0
       },
-      "build_number": 8,
+      "build_number": 10,
       "acceptable_sugar_versions": {
         "exact_matches": [
           "8.0.0"
