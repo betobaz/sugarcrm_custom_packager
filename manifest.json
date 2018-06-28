@@ -1,0 +1,15 @@
+{
+  "key": "key",
+  "name": "name",
+  "description": "description",
+  "author": "Merx Developer Team",
+  "version": "version",
+  "is_uninstallable": true,
+  "published_date": "published_date",
+  "type": "module",
+  "acceptable_sugar_versions":{},
+  "acceptable_sugar_flavors": [],
+  "readme": "readme",
+  "icon": "",
+  "remove_tables": ""
+}

@@ -1,0 +1,26 @@
+{
+  "projects": {
+    "selanusa": {
+      "base_directory": "/Users/betobaz/Documents/Merx/vagrant/sugarcrm_php71es56/selanusa.merxbp.loc/",
+      "branch_name": "selanusa",
+      "origin_commit": "f1d61f2338dcd660f89dc810a05b0135e1d40d5a",
+      "version": {
+        "major": 1,
+        "minor": 0,
+        "patch": 0
+      },
+      "build_number": 8,
+      "acceptable_sugar_versions": {
+        "exact_matches": [
+          "8.0.0"
+        ],
+        "regex_matches": [
+          "8\\.0\\.[0-2]\\.[0-9]$"
+        ]
+      },
+      "acceptable_sugar_flavors": [
+        "ENT"
+      ]
+    }
+  }
+}
