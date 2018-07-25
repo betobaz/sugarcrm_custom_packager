@@ -96,7 +96,7 @@ gulp.task('get-add-and-modified',[
 gulp.task('zip-files', [
   "get-add-and-modified"
 ], () => {
-  var output = fs.createWriteStream(__dirname + '/dist/'+project+'.zip');
+  var output = fs.createWriteStream(__dirname + '/dist/'+project+'_custom.zip');
   output.on('close', function() {
     console.log(archive.pointer() + ' total bytes');
     console.log('archiver has been finalized and the output file descriptor has closed.');
@@ -123,7 +123,9 @@ gulp.task('zip-files', [
 gulp.task('create-manifest', [
   "zip-files"
 ], () => {
-  manifest = fs.readFileSync(path.join(__dirname, 'manifest.json'));
+  manifest = JSON.parse((fs.readFileSync(path.join(__dirname, 'manifest.json'))).toString());
+  
+  //manifest 
   manifest.key = project+"_custom";
   manifest.name = project+"_custom";
   manifest.description = project+"_custom";
@@ -131,7 +133,6 @@ gulp.task('create-manifest', [
   manifest.published_date = (new Date).toISOString();
   manifest.acceptable_sugar_versions = config_project.acceptable_sugar_versions;
   manifest.acceptable_sugar_flavors = config_project.acceptable_sugar_flavors;
-
   installdefs = {
     "id": project+"_custom",
     "copy": copy_defs
