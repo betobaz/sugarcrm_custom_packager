@@ -6,3 +6,4 @@ yarn.lock
 /list_files/*
 !/list_files/__init__
 package-lock.json
+/config.json
