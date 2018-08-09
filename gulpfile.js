@@ -26,7 +26,7 @@ const directory_app = process.cwd();
 const diff_file = directory_app+'/list_files/diff_'+project+'.txt';
 const ignore_file = directory_app+'/list_files/ignore_'+project+'.txt';
 const ignore_files_dic = [];
-const package_version = [config_project.version.major,config_project.version.major,config_project.version.patch].join(".");
+const package_version = [config_project.version.major,config_project.version.minor,config_project.version.patch].join(".");
 
 
 var list_files_package = [];
