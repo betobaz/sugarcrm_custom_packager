@@ -129,7 +129,7 @@ gulp.task('zip-files', [
   archive.pipe(output);
   console.log("list_files_package:count,", list_files_package.length);
   list_files_package.every((filename) => {
-    var full_filename = config_project.base_directory + filename;
+    var full_filename = config_project.base_directory + '/' + filename;
     archive.append(fs.createReadStream(full_filename), { name: filename });
     copy_defs.push({
       "from": "<basepath>/"+filename,

@@ -5,5 +5,6 @@ yarn.lock
 !/dist/__init__
 /list_files/*
 !/list_files/__init__
+package-lock.json
 /config.json
 /package-lock.json
