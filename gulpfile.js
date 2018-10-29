@@ -18,16 +18,28 @@ var knownOptions = {
 var options = minimist(process.argv.slice(2), knownOptions);
 
 const project = options.project;
+
+if(!project){
+  console.error("Especifique el projecto");
+
+  // TODO listar los projectos
+  process.exit();
+}
+
 nconf.set(("projects:"+project+":build_number"), (nconf.get("projects:"+project+":build_number") + 1));
 nconf.save();
 
+gulp.task('help', () => {
+  console.log("gulp --project <project_name> ");
+  console.log("gulp --project <project_name> --omit-build-packages ");
+  console.log("gulp --project <project_name> --devDependencies ");
+});
+
 const config_project = nconf.get("projects:"+project);
 const directory_app = process.cwd();
-const diff_file = directory_app+'/list_files/diff_'+project+'.txt';
-const ignore_file = directory_app+'/list_files/ignore_'+project+'.txt';
+const diff_file = `${config_project.base_directory}/diff_custom.txt`;
+const ignore_file = `${directory_app}/list_files/ignore_${project}.txt`;
 const ignore_files_dic = [];
-const package_version = [config_project.version.major,config_project.version.minor,config_project.version.patch].join(".");
-
 
 var list_files_package = [];
 var manifest = {};
@@ -36,7 +48,14 @@ var copy_defs = [];
 
 var archive = null;
 
+let package_version = [config_project.version.major,config_project.version.minor,config_project.version.patch].join(".");
 shell.cd(config_project.base_directory);
+
+if (fs.existsSync(config_project.base_directory+"/Merxfile.json")) {
+  console.log("Merxfile.json existe");
+  let merxfile = JSON.parse(fs.readFileSync(config_project.base_directory+"/Merxfile.json"), 'utf8');
+  package_version = merxfile['version'];
+}
 
 if(!project){
   console.error("Especifique el proyecto");
@@ -96,7 +115,7 @@ gulp.task('get-add-and-modified',[
 gulp.task('zip-files', [
   "get-add-and-modified"
 ], () => {
-  var output = fs.createWriteStream(__dirname + '/dist/'+project+'_custom.zip');
+  var output = fs.createWriteStream(__dirname + `/dist/${project}_custom_v${package_version}.zip`);
   output.on('close', function() {
     console.log(archive.pointer() + ' total bytes');
     console.log('archiver has been finalized and the output file descriptor has closed.');
