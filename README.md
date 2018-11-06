@@ -45,7 +45,7 @@ Dentro del directorio del proyecto de SugarCRM deberá de existir un archivo con
 
 ```json
 {
-	// Número de versión que es utilizado dentro del archivo manifest.php y el nombre del archivo, ejemplo: aforexxi_custom_v1.11.2
+	/* Número de versión que es utilizado dentro del archivo manifest.php y el nombre del archivo, ejemplo: aforexxi_custom_v1.11.2 */
 	"version": "1.11.2",
 	// Nombre del branch dentro del repositorio https://github.com/MerxBusinessPerformance/custom_sugarcrm
 	"branch_name": "aforexxi",
