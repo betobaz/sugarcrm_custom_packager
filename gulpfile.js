@@ -35,26 +35,34 @@ gulp.task('help', () => {
   console.log("gulp --project <project_name> --devDependencies ");
 });
 
-const config_project = nconf.get("projects:"+project);
+let config_project = nconf.get("projects:"+project);
 const directory_app = process.cwd();
+if(!config_project.base_directory){
+  throw "No esta definido el directorio base del proyecto en el archivo config.json.";
+}
+const project_directory = config_project.base_directory;
 const diff_file = `${config_project.base_directory}/diff_custom.txt`;
-const ignore_file = `${directory_app}/list_files/ignore_${project}.txt`;
-const ignore_files_dic = [];
+let ignore_files_dic = [];
 
 var list_files_package = [];
 var manifest = {};
 var installdefs = {};
 var copy_defs = [];
+let merxfile = {};
 
 var archive = null;
 
-let package_version = [config_project.version.major,config_project.version.minor,config_project.version.patch].join(".");
+let package_version = "";
 shell.cd(config_project.base_directory);
 
 if (fs.existsSync(config_project.base_directory+"/Merxfile.json")) {
-  console.log("Merxfile.json existe");
-  let merxfile = JSON.parse(fs.readFileSync(config_project.base_directory+"/Merxfile.json"), 'utf8');
+  merxfile = JSON.parse(fs.readFileSync(config_project.base_directory+"/Merxfile.json"), 'utf8');
+  config_project = merxfile;
   package_version = merxfile['version'];
+  ignore_files_dic = merxfile['ignore_files']
+}
+else{
+  throw "No existe el archvo Merxfile.json del proyecto";
 }
 
 if(!project){
@@ -73,17 +81,8 @@ gulp.task('get-git-diff', () => {
   shell.exec('git diff --name-status ' + config_project.origin_commit+ ' HEAD custom/ > ' + diff_file);
 });
 
-gulp.task('load-ignore-dic', function (done){
-  eachLine = Promise.promisify(lineReader.eachLine);
-  eachLine(ignore_file, (line) => {
-    ignore_files_dic.push(line.replace(/\r?\n|\r/,''));
-  }).then(() =>{
-    done();
-  })
-});
-
 gulp.task('get-add-and-modified',[
-  'load-ignore-dic'
+  'get-git-diff'
 ], function (done){
   eachLine = Promise.promisify(lineReader.eachLine);
   var addCounter = 0;
@@ -129,7 +128,7 @@ gulp.task('zip-files', [
   archive.pipe(output);
   console.log("list_files_package:count,", list_files_package.length);
   list_files_package.every((filename) => {
-    var full_filename = config_project.base_directory + '/' + filename;
+    var full_filename = project_directory + '/' + filename;
     archive.append(fs.createReadStream(full_filename), { name: filename });
     copy_defs.push({
       "from": "<basepath>/"+filename,
